@@ -3,6 +3,7 @@ var shipImage;
 let score = 0;
 let highscore = 0;
 let bubbles = [];
+let level = 1;
 
 function preload() {
   shipImage = loadImage('jet6.2.png');
@@ -23,13 +24,15 @@ function setup() {
 }
 
 function draw() {
-  background(58-frameCount/80, 0, 153-frameCount/60);   //background gets darker as you get more points
+  background(265-level*10, 0+level*10, 265-level*10,);   //background gets darker as you get more points
+  //background(58, 0+level*50, 153, 255-level*50) // blurry effect on level up
   //background(100,240,150)
   push()
   textSize(32);
   fill(255)
   text('Score: '+ score, 20, 40)
   text('Highscore: '+ highscore, 20, 80) //displays score in the corner
+  text('Level: '+ level, 20, 120)
   pop()
     for (let i=0; i <bubbles.length; i++){ //draws bubbles as in setup
     bubbles[i].move();
@@ -58,11 +61,23 @@ function draw() {
     score = 0 //the score is 0
   }
 }
-  if(frameCount%45 == 0) {//every 45 frames
-    var b = new Bubble(width, random(50,height-50), random(2,3+(score/300)), random(30-score/100,50-score/200));
+  if(frameCount%90 == 0) {//every 45 frames, less as levels go up
+    var c = new Bubble(width, random(50, height/2-level*20), random(1+level,3+(score/300)), random(30-score/100,50-level*2));
+    var b = new Bubble(width, random(height/2 +level*20,height-50), random(1+level,3+(score/300)), random(30-score/100,50-level*2));
     //when score goes up, the speed goes up and the size goes down
     bubbles.push(b);//makes new bubbles
+    bubbles.push(c);
 }
+//   if(frameCount%45 - level*5 == 0) {//every 45 frames
+
+//     var d = new Bubble(width, random(height-50, height-100), random(2,3+(score/300)), random(30-score/100,50-score/200))
+//   //when score goes up, the speed goes up and the size goes down
+//   bubbles.push(c);//makes new bubbles
+//   bubbles.push(d);//makes new bubbles
+// }
+
+    level = int(score/1000)+1;
+
 // keys to move
   if(keyDown(65))
     ship.rotation -= 4;
